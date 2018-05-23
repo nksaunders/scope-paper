@@ -4,4 +4,11 @@
 *.log
 *.out
 *.npz
+*.cls
+*.bls
+*.fdb_latexmk
+*.bst
+*.fls
+*.gz
+/images
 .DS_Store
