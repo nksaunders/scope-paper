@@ -41,19 +41,22 @@ for i in tqdm(range(994)):
 sub_pixel += np.abs(np.min(sub_pixel))
 
 pl.clf()
-fig, (ax0, ax1, ax2) = pl.subplots(1, 3, figsize=(12,4))
+pl.close()
+fig, (ax0, ax1, ax2) = pl.subplots(1, 3, figsize=(16,4))
 
-fig0 = ax0.imshow(detector, cmap='gray', origin='lower', extent=[0,6,0,6])
+fig0 = ax0.imshow(detector, cmap='gray', origin='lower', extent=[-0.5,6.5,-0.5,6.5])
 ax0.set_xlabel('(a)')
-fig1 = ax1.imshow(sub_pixel, vmin=0, vmax=50000, origin='lower', extent=[0,6,0,6])
+fig1 = ax1.imshow(sub_pixel, vmin=0, vmax=50000, origin='lower', extent=[-0.5,6.5,-0.5,6.5])
 ax1.set_xlabel('(b)')
 fig2 = ax2.imshow(fpix[0], vmin=0, vmax=50000, origin='lower')
 ax2.set_xlabel('(c)')
 
-pl.colorbar(fig0, ax=ax0)
-pl.colorbar(fig1, ax=ax1)
-pl.colorbar(fig2, ax=ax2)
+pl.colorbar(fig0, ax=ax0, fraction=0.046, pad=0.04)
+pl.colorbar(fig1, ax=ax1, fraction=0.046, pad=0.04)
+pl.colorbar(fig2, ax=ax2, fraction=0.046, pad=0.04)
 
-pl.savefig('detector_sensitivity', format='eps')
+pl.tight_layout()
+
+pl.savefig('detector_sensitivity', format='eps', bbox_inches='tight')
 
 pl.show()
