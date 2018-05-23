@@ -44,14 +44,14 @@ In this paper, we present options for assessing and removing these sources of no
 
 Removal of instrumental noise requires a thorough understanding of its source. Stellar motion relative to the pixel sensitivity variation on the \textit{Kepler} CCD causes fluctuation in the amount of light received by the telescope detector. In order to accurately simulate the intrumental noise characteristic of \textit{K2} light curves, it is necessary to generate a forward model for the pixel sensitivity variation of the CCD. Light curves that were simulated using this sensitivity variation model are adequate to serve as well-understood sample targets on which to test noise levels of light curves generated under conditions of high roll magnitude and apply de-trending methods. To accurately represent the \textit{Kepler} CCD, we generated a model for the detector that included both inter-pixel sensitivity variation between pixels and intra-pixel sensitivity variation within each pixel. We found that a stochastic distribution of sensitivity with ${\sim}1\%$ variation between pixels and ${\sim}5\%$ variation within pixels, from center to edge. A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector}.
 
+For campaigns up to 17, stellar PSFs already traverse various regions of sensitivity variation on the CCD due to pointing instability. As spacecraft motion increases, PSFs will move more dramatically across many pixels, which will contribute significant noise to sputtering-\textit{K2} light curves.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\linewidth]{detector_sensitivity.eps}
 	\caption{(a) A sample detector with sensitivity variation, where white represents 100\% photon capture rate, and the shaded regions have lower values for quantum sensitivity. Note that our model peaks in sensitivity at the center of each pixel and falls off towards the edges. There is also random variation in sensitivity between pixels. (b) A Stellar PSF mathematically simulated onto detector at the sub-pixel level. The sensitivity variation has been exaggerated in this simulation to demonstrate the variation in sub-pixel fluxes. (c) The final interpolated image. The value of each pixel is the integral over $x$ and $y$ of the sub-pixel flux.}
 	\label{fig:detector_sensitivity}
 \end{figure}
-
-For campaigns up to 17, stellar PSFs already traverse various regions of sensitivity variation on the CCD due to pointing instability. As spacecraft motion increases, PSFs will move more dramatically across many pixels, which will contribute significant noise to sputtering-\textit{K2} light curves.
 
 \subsection{PSF Model}
 
