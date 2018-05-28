@@ -15,7 +15,8 @@
 
 \begin{document}
 
-\title{Simulated Exoplanet Photometry with High-Motion Space Telescope Detectors}
+% \title{Simulated Exoplanet Photometry with High-Motion Space Telescope Detectors}
+\title{Simulated Photometry in the Case of Low Pointing-Precision \textit{K2} Observations}
 
 \author{Nicholas Saunders \altaffilmark{1,2,3}, Rodrigo Luger \altaffilmark{1,2}, Rory Barnes \altaffilmark{1,2}}
 
@@ -153,10 +154,10 @@ The likelihood ($\mathcal{L}$) of the observed data given our model can be descr
 where $\textbf{y}$ is the raw flux light curve, $\textbf{X}$ is the design matrix constructed from the basis vectors of the intrumental noise in each pixel, $\pmb{\Sigma}$ is the covariance matrix between pixels, $C$ is a normalization constant, and $\textbf{w}$ is the array of weights. By solving for the derivative of the natural log of this likelihood with respect to $\textbf{w}$, we locate the distribution peak and calculate a maximum likelihood estimate of the model parameters.
 %
 \[
-\ln{\mathcal{L}} = - \frac{1}{2}\left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right)^\top \cdot \pmb{\Sigma}^{-1} \cdot \left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right) + C. \\
+\ln{\mathcal{L}} = - \frac{1}{2}\left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right)^\top \cdot \pmb{\Sigma}^{-1} \cdot \left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right) + C'. \\
 \]
 %
-$C$ is a constant and becomes $0$ when we differentiate with respect to $\textbf{w}$:
+$C'$ is a constant and becomes $0$ when we differentiate with respect to $\textbf{w}$:
 \[
 \frac{d\ln{\mathcal{L}}}{d \textbf{w}} = 0 \\
 \]
