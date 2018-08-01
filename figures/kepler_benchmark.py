@@ -75,8 +75,8 @@ def Plot():
     ax.set_xlim(8, 18)
     ax.legend(loc = 'best')
 
-    pl.show()
-    # pl.savefig('kepler_benchmark.pdf', format='pdf', bbox_inches='tight')
+    # pl.show()
+    pl.savefig('kepler_benchmark.pdf', format='pdf', bbox_inches='tight')
 
-Generate()
+# Generate()
 Plot()
