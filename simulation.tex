@@ -9,7 +9,7 @@
 \usepackage{listings}
 \captionsetup[figure]{labelsep=space,singlelinecheck=false}
 \captionsetup[subfigure]{justification=centering}
-\epstopdfDeclareGraphicsRule{.pdf}{png}{.png}{convert #1 \OutputFile}
+% \epstopdfDeclareGraphicsRule{.pdf}{png}{.png}{convert #1 \OutputFile}
 \graphicspath{ {images/} }
 \DeclareGraphicsExtensions{.png,.pdf}
 
@@ -81,7 +81,7 @@ To best capture the characteristics of \textit{K2} data when analyzing the noise
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=.5\linewidth]{nomotion.png}
+	\includegraphics[width=.5\linewidth]{kepler_benchmark.pdf}
 	\caption{Photometric precision of our simulated light curves with no motion compared to original \textit{Kepler} targets as a function of $Kp$ Mag. The yellow trend represents the noise as a function of }
 	\label{fig:nomotion}
 \end{figure}
@@ -92,7 +92,7 @@ We found that a stochastic distribution of sensitivity with ${\sim}1\%$ variatio
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=.5\linewidth]{1xmotion.png}
+	\includegraphics[width=.5\linewidth]{k2_benchmark.pdf}
 	\caption{CDPP of our simulated light curves with \textit{K2} motion compared to real \textit{K2} targets as a function of $K_p\ Mag$.}
 	\label{fig:1motion}
 \end{figure}
