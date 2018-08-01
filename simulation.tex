@@ -22,7 +22,7 @@
 
 \altaffiltext{1}{Department of Astronomy, University of Washington, Box 351580, Seattle, WA 98195, USA}
 \altaffiltext{2}{Virtual Planetary Laboratory, Seattle, WA 98195, USA}
-\altaffiltext{3}{nks1994@uw.edu}
+\altaffiltext{3}{saunders@baeri.org}
 
 \begin{abstract}
 
@@ -37,22 +37,11 @@ Despite the failure of two reaction wheels in 2012 and 2013, the \textit{Kepler}
 
 Further, as the \textit{Kepler} Space Telescope runs out of fuel, its motion due to thruster fires is expected to become less predictable and the magnitude of targets' motion relative to the detector will increase. With higher motion, targets will traverse more regions of varied pixel sensitivity, contributing more noise to the light curves of \textit{K2} targets. Eventually, the telescope will enter a phase of constant drift, at which point targets will traverse many pixels across the detector and flux pollution from neighbors is likely, as stellar PSFs may overlap over the course of a campaign.
 
-In this paper, we present options for assessing and removing these sources of noise. \S 2 and \S 3 explore the issues of pixel sensitivity variation and crowding, respectively. \S 4 describes our methods to characterize and address these sources of noise: \S 4.1 focuses on PSF-fitting, \S 4.2 on Aperture-fitting, and \S 4.3 on Motion Removal. In \S 5, we discuss our results, and finally we draw our conclusions in \S 6.
+In this paper, we present options for characterizing these sources of noise and assessing noise-removal methods. \S 2 and \S 3 explore the issues of pixel sensitivity variation and crowding, respectively. \S 4 describes our methods to characterize and address these sources of noise: \S 4.1 focuses on PSF-fitting, \S 4.2 on Aperture-fitting, and \S 4.3 on Motion Removal. In \S 5, we discuss our results, and finally we draw our conclusions in \S 6.
 
 \section{Methods}
 
-\subsection{Pixel Sensitivity Variation}
-
-Removal of instrumental noise requires a thorough understanding of its source. Stellar motion relative to the pixel sensitivity variation on the \textit{Kepler} CCD causes fluctuation in the amount of light received by the telescope detector. In order to accurately simulate the intrumental noise characteristic of \textit{K2} light curves, it is necessary to generate a forward model for the pixel sensitivity variation of the CCD. Light curves that were simulated using this sensitivity variation model are adequate to serve as well-understood sample targets on which to test noise levels of light curves generated under conditions of high roll magnitude and apply de-trending methods. To accurately represent the \textit{Kepler} CCD, we generated a model for the detector that included both inter-pixel sensitivity variation between pixels and intra-pixel sensitivity variation within each pixel. We found that a stochastic distribution of sensitivity with ${\sim}1\%$ variation between pixels and ${\sim}5\%$ variation within pixels, from center to edge. A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector}.
-
-For campaigns up to 17, stellar PSFs already traverse various regions of sensitivity variation on the CCD due to pointing instability. As spacecraft motion increases, PSFs will move more dramatically across many pixels, which will contribute significant noise to sputtering-\textit{K2} light curves.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\linewidth]{detector_sensitivity.eps}
-	\caption{(a) A sample detector with sensitivity variation, where white represents 100\% photon capture rate, and the shaded regions have lower values for quantum sensitivity. Note that our model peaks in sensitivity at the center of each pixel and falls off towards the edges. There is also random variation in sensitivity between pixels. (b) A Stellar PSF mathematically simulated onto the detector at the sub-pixel level. The sensitivity variation has been exaggerated in this simulation to demonstrate the variation in sub-pixel fluxes. (c) The final interpolated image. The value of each pixel is the integral over $x$ and $y$ of the sub-pixel flux.}
-	\label{fig:detector_sensitivity}
-\end{figure}
+Removal of instrumental noise requires a thorough understanding of its source. Stellar motion relative to the pixel sensitivity variation on the \textit{Kepler} CCD causes fluctuation in the amount of light received by the telescope detector. In order to accurately simulate the intrumental noise characteristic of \textit{K2} light curves, it is necessary to generate a forward model for the pixel sensitivity variation of the CCD. Light curves that were simulated using this sensitivity variation model are adequate to serve as well-understood sample targets on which to determine noise levels resulting from light curves generated under conditions of high roll magnitude and apply de-trending methods. To accurately represent the \textit{Kepler} CCD, we generated a model for the detector that included both inter-pixel sensitivity variation between pixels and intra-pixel sensitivity variation within each pixel.
 
 \subsection{PSF Model}
 
@@ -82,7 +71,13 @@ P(x,y) & = \sum_m \frac{1}{2\pi\sigma_{x,m}\sigma_{x,n}\sqrt{1-\rho_m^2}} \text{
 %
 where $\sigma_x$, $\sigma_y$ are the standard deviations of the PSF in $x$ and $y$, and $\rho$ is the correlation coefficient between $x$ and $y$.
 
-Our model for the sensitivity variation was chosen to capture the same noise magnitude as real \textit{K2} targets. For our noise metric, we use the Combined Differential Photometric Precision for consistency with \cite{2016AJ....152..100L}. In Figure \ref{fig:nomotion}, we plot the CDPP of our simulated light curves with no motion against CDPP of original \textit{Kepler} light curves as a function of $Kp$ Mag. Our synthetic targets follow the trend of photon-limited noise because our benchmark model has no stellar variability, which can add extraneous noise to de-trended light curves.
+This is the same model we fit to the simple aperture photometry (SAP) flux of \textit{K2} targets to subtract contaminant flux (further discussion in \S 4.1). The coefficients $a_n$ were determined to emulate the magnitude of sensitivity variation on the \textit{Kepler} CCD based on its contribution to the noise in \textit{K2} light curves. Sensitivity coefficients are independent in $x$ and $y$ for consistancy with the Kepler Intrument Handbook \citep{kepler_intrument_handbook}. Our method for choosing values for sensitivity variation coefficients $a_n$ is descried in the following section.
+
+\subsection{Pixel Sensitivity Variation}
+
+Our model for the sensitivity variation was chosen to capture the same noise magnitude as real \textit{K2} targets. For our noise metric, we use the Combined Differential Photometric Precision for consistency with \cite{2016AJ....152..100L}. We used a two-step benchmarking process to estimate the magnitude of variation in quantum sensitivity and contribution by photon noise and background noise. First we considered the no-motion case. For a large population of simulated targets with randomly generated stellar magnitude and detector position, the noise versus magnitude trend should closely follow that of the original \textit{Kepler} mission. The results of  benchmark test one are shown in Figure \ref{fig:nomotion}, where we plot the CDPP of our simulated light curves with no motion against CDPP of original \textit{Kepler} light curves as a function of $Kp$ Mag.
+
+To best capture the characteristics of \textit{K2} data when analyzing the noise contributed by quantum sensitivity variation, our model also included two sources of synthetic noise -- photon and background noise.
 
 \begin{figure}[h]
 	\centering
@@ -93,6 +88,8 @@ Our model for the sensitivity variation was chosen to capture the same noise mag
 
 In Figure \ref{fig:1motion}, we inject motion from the \textit{K2} target EPIC 205998445 to benchmark our model against \textit{K2} data. This target is a  \textit{K2} C03 star with $Kp = 12.029$ located near the edge of its detector. The noise of our various tests bracket the trend of raw \textit{K2} noise, again following the photon-limited trend due to no variability.
 
+We found that a stochastic distribution of sensitivity with ${\sim}1\%$ variation between pixels and ${\sim}5\%$ variation within pixels, from center to edge. A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector_sensitivity}.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=.5\linewidth]{1xmotion.png}
@@ -100,11 +97,14 @@ In Figure \ref{fig:1motion}, we inject motion from the \textit{K2} target EPIC 2
 	\label{fig:1motion}
 \end{figure}
 
-The coefficients $a_n$ were determined to emulate the magnitude of sensitivity variation on the \textit{Kepler} CCD based on its contribution to the noise in \textit{K2} light curves. Sensitivity coefficients are independent in $x$ and $y$ for consistancy with the Kepler Intrument Handbook \citep{kepler_intrument_handbook}.
+For campaigns up to 17, stellar PSFs already traverse various regions of sensitivity variation on the CCD due to pointing instability. As spacecraft motion increases, PSFs will move more dramatically across many pixels, which will contribute significant noise to sputtering-\textit{K2} light curves.
 
-To best capture the characteristics of \textit{K2} data when analyzing the noise contributed by quantum sensitivity variation, our model also included two sources of synthetic noise -- photon and background noise.
-
-This is the same model we fit to the simple aperture photometry (SAP) flux of \textit{K2} targets to subtract contaminant flux (further discussion in \S 4.1).
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\linewidth]{detector_sensitivity.eps}
+	\caption{(a) A sample detector with sensitivity variation, where white represents 100\% photon capture rate, and the shaded regions have lower values for quantum sensitivity. Note that our model peaks in sensitivity at the center of each pixel and falls off towards the edges. There is also random variation in sensitivity between pixels. (b) A Stellar PSF mathematically simulated onto the detector at the sub-pixel level. The sensitivity variation has been exaggerated in this simulation to demonstrate the variation in sub-pixel fluxes. (c) The final interpolated image. The value of each pixel is the integral over $x$ and $y$ of the sub-pixel flux.}
+	\label{fig:detector_sensitivity}
+\end{figure}
 
 \subsection{High Roll}
 
