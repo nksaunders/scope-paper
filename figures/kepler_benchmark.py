@@ -37,7 +37,7 @@ def Plot():
     _, kepler_kp, kepler_cdpp6 = np.loadtxt(os.path.join(EVEREST_SRC, 'missions', 'k2', 'tables', 'kepler.cdpp'), unpack = True)
     fig, ax = pl.subplots(1)
     ax.scatter(kepler_kp, kepler_cdpp6, color='red', alpha = 0.01, zorder = -1)
-    ax.set_rasterization_zorder(-1)
+    ax.set_rasterization_zorder(0)
     bins = np.arange(7.5,18.5,0.5)
     by = np.zeros_like(bins) * np.nan
     for b, bin in enumerate(bins):
