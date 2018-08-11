@@ -35,7 +35,7 @@
 
 Despite the failure of two reaction wheels in 2012 and 2013, the \textit{Kepler} Space Telescope has continued to produce valuable data in its new configuration, \textit{K2}, with significantly higher precision than ground based telescopes \citep{2014PASP..126..398H}. However, due to the unstable pointing caused by the missing reaction wheels, targets have significant motion relative to the quantum sensitivity variation of the telescope detector, creating noise in \textit{K2} light curves. A number of attempts have been made to isolate and remove the instrumental noise from \textit{K2} data \citep{2015A&A...579A..19A, 0004-637X-806-1-30, 2015MNRAS.454.4159H, 2015MNRAS.447.2880A, 2016MNRAS.459.2408A}.
 
-Further, as the \textit{Kepler} Space Telescope runs out of fuel, its motion due to thruster fires is expected to become less predictable and the magnitude of targets' motion relative to the detector will increase. With higher motion, targets will traverse more regions of varied pixel sensitivity, contributing more noise to the light curves of \textit{K2} targets. Eventually, the telescope will enter a phase of constant drift, at which point targets will traverse many pixels across the detector and flux pollution from neighbors is likely, as stellar PSFs may overlap over the course of a campaign.
+Further, as the \textit{Kepler} Space Telescope runs out of fuel, its motion due to thruster fires is expected to become less predictable and the magnitude of targets' motion relative to the detector will increase. With higher motion, targets will traverse more regions of varied pixel sensitivity, contributing more noise to the light curves of \textit{K2} targets. Eventually, when thruster fuel has been depleted entirely, the telescope will enter a phase of constant drift, at which point targets will traverse many pixels across the detector. This will increase the likelihood of flux pollution from neighbors, as stellar PSFs may overlap over the course of a campaign.
 
 In this paper, we present options for characterizing these sources of noise and assessing noise-removal methods. \S 2 and \S 3 explore the issues of pixel sensitivity variation and crowding, respectively. \S 4 describes our methods to characterize and address these sources of noise: \S 4.1 focuses on PSF-fitting, \S 4.2 on Aperture-fitting, and \S 4.3 on Motion Removal. In \S 5, we discuss our results, and finally we draw our conclusions in \S 6.
 
@@ -126,15 +126,6 @@ For campaigns up to 17, stellar PSFs already traverse various regions of sensiti
 
 To test how PLD performs on targets with high motion relative to the detector, we inject motion vectors with various coefficients into our synthetic models. A coefficient of 1 corresponds to physical \textit{K2} motion (maximum of $\sim 0.56$ pixels), while a coefficient of 20 results in motion of up to $11.2$ pixels.
 
-The resulting raw light curve noise can be seen in Fig. \ref{fig:rawmotion} compared to raw \textit{K2} noise. Our synthetic targets with a motion coefficient of 1 align with the raw \textit{K2} trend and increase corresponding to noise coefficient.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\linewidth]{rawmotion.png}
-	\caption{CDPP of synthetic targets with 1x to 20x motion versus raw \textit{K2} noise as a function of $K_p\ Mag$.}
-	\label{fig:rawmotion}
-\end{figure}
-
 \section{Results}
 
 The two sources of noise presented above -- pixel crowding and detector sensitivity variation -- have been obstacles for \textit{K2} de-trending pipelines. In the following section, we present methods to address both sources of noise and recover more accurate light curves.
@@ -185,11 +176,10 @@ When de-trended with second order PLD, our synthetic light curves align with the
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1.0\linewidth]{detmotion.png}
-	\caption{De-trended CDPP for synthetic targets with 1x to 20x motion versus original \textit{Kepler} noise as a function of $K_p\ Mag$.}
+	\includegraphics[width=.5\linewidth]{detmotion.png}
+	\caption{De-trended CDPP for synthetic targets with 1x to 20x motion versus original \textit{Kepler} noise as a function of $Kp$ Mag.}
 	\label{fig:detmotion}
 \end{figure}
-
 
 \section{Discussion}
 
