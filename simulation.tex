@@ -190,7 +190,7 @@ These results were achieved by applying second order PLD to pixels within an ape
 
 Our tests found that \texttt{EVEREST} and PLD are capable of removing instrumental noise from light curves of simulated targets with significantly increased magnitude of motion. The question surrounding the usefulness of high-motion data is very relevant to making decisions about the future of \textit{K2} observations, and our hope is to emphasize the potential value in continued observation and contribute to the de-trending of future data.
 
-\section{Discussion}
+\section{Additional Discussion}
 
 \subsection{Focus Changes}
 
@@ -201,9 +201,11 @@ Due to the internal optics of the Transiting Exoplanet Survey Satellite (\textit
 
 In the instance that \textit{TESS} also faces motion issues, there will be a significant need to test de-trending methods with an emphasis on defining ideal apertures. With a combination of large PSFs and increased noise, apertures and associated aperture-based PLD methods will be an essential piece of our noise-removal strategy for \textit{TESS}.
 
+The stellar PSF parameters can be easily adjusted in the forward model produced by \texttt{scope} to cover more pixels and more accurately capture PSFs characteristic of \textit{TESS} observations. Using this simulation, it would be valuable to test various apertures and motion cases prior to the first public release of observations.
+
 \subsection{Ground-based Observations}
 
-
+Seeing aberation and atmospheric interference are additional sources of noise that could be included in the \texttt{scope} model. PLD was developed for \textit{Spitzer} and modified for application to \textit{K2}, but has seen little application elsewhere. For ground-based observations with significant noise due to pointing issues or atmospheric interference, PLD may be a valuable tool to make the most of data. \texttt{scope} is an ideal testbed for this type of noise-removal because it allows users to perform tests on noisy observations performed on sources that are well understood with input parameters that can be compared to post-processing results. Though it was initially imagined for space-based telescopes, this software has undeniably useful applications for ground-based telescopes.
 
 \section{Using \texttt{scope}}
 
