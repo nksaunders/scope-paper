@@ -15,7 +15,7 @@
 
 \begin{document}
 
-% \title{Simulated Exoplanet Photometry with High-Motion Space Telescope Detectors}
+% \title{Simulated CCD Exoplanet Photometry: High-Motion Space Telescopes}
 \title{Simulated CCD Photometry: Low Pointing-Precision \textit{K2} Observations}
 
 \author{Nicholas Saunders \altaffilmark{1,2,3}, Rodrigo Luger \altaffilmark{1,2}, Rory Barnes \altaffilmark{1,2}}
@@ -37,7 +37,7 @@ Despite the failure of two reaction wheels in 2012 and 2013, the \textit{Kepler}
 
 However, as the \textit{Kepler} Space Telescope runs out of fuel, its motion due to thruster fires is expected to become less predictable and the magnitude of targets' motion relative to the detector will increase. With higher motion, targets will traverse more regions of varied pixel sensitivity, contributing more noise to the light curves of \textit{K2} targets. Eventually, when thruster fuel has been depleted entirely, the telescope may enter a phase of constant drift, at which point targets will traverse many pixels across the detector. This will also increase the likelihood of flux pollution from neighbors, as stellar PSFs may overlap over the course of a campaign.
 
-In this paper, we present options for characterizing these sources of noise and assessing noise-removal methods. \S 2 and \S 3 explore the issues of pixel sensitivity variation and crowding, respectively. \S 4 describes our methods to characterize and address these sources of noise: \S 4.1 focuses on PSF-fitting, \S 4.2 on Aperture-fitting, and \S 4.3 on Motion Removal. In \S 5, we discuss our results, and finally we draw our conclusions in \S 6.
+In this paper, we present options for characterizing increased noise due to high motion and assessing noise-removal methods. \S 2 describes the mathematical methods of our simulation, \S 3 explores the results of our testing, \S 4 elaborates on future applications of this work, \S 5 provides usuage examples, and \S 6 discusses our conclusions.
 
 \section{Methods}
 
@@ -90,6 +90,30 @@ To most accurately capture the characteristics of \textit{K2} data when analyzin
 
 In our second benchmarking test, we consider the case of current \textit{K2} motion. To accomplish this, we injected motion from 1000 cadences of the \textit{K2} target EPIC 205998445, creating a simulated example of a current observation to benchmark our model against \textit{K2} data. EPIC 205998445 is a \textit{K2} C03 star with $Kp = 12.029$ located near the edge of its detector. Statistics about the motion data used in our simulation can be found in Table \ref{table:motionstatistics}.
 
+With real \textit{K2} motion applied, sensitivity variation parameters were adjusted until CDPP versus $Kp$ Mag correspended to the trend of real \textit{K2} observations. We found that a stochastic distribution of sensitivity with ${\sim}1\%$ variation between pixels and ${\sim}5\%$ variation within pixels, from center to edge resulted in benchmark test two following the expected trend most similarly. The results of benchmark test two can be seen in Figure \ref{fig:1motion}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.5\linewidth]{k2_benchmark.pdf}
+	\caption{CDPP of our simulated light curves with \textit{K2} motion compared to real \textit{K2} targets as a function of $Kp$ Mag.}
+	\label{fig:1motion}
+\end{figure}
+
+A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector_sensitivity}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\linewidth]{detector_sensitivity.eps}
+	\caption{(a) A sample detector with sensitivity variation and no stellar targets, where white represents 100\% photon capture rate, and the shaded regions have lower values for quantum sensitivity. Note that our model peaks in sensitivity at the center of each pixel and falls off towards the edges. There is also random variation in sensitivity between pixels. (b) A Stellar PSF mathematically simulated onto the detector at the sub-pixel level. The sensitivity variation has been exaggerated in this simulation to demonstrate the variation in sub-pixel fluxes. (c) The final interpolated image. The value of each pixel is the integral over $x$ and $y$ of the sub-pixel flux.}
+	\label{fig:detector_sensitivity}
+\end{figure}
+
+For campaigns up to 17, stellar PSFs already traverse various regions of sensitivity variation on the CCD due to pointing instability. As spacecraft motion increases, PSFs will move more dramatically across many pixels, which will contribute significant noise to sputtering-\textit{K2} light curves.
+
+\subsection{Increased Motion}
+
+To test how PLD performs on targets with high motion relative to the detector, we injected motion vectors with various coefficients into our synthetic models. A coefficient of 1 corresponds to physical \textit{K2} motion (maximum of $\sim 0.56$ pixels), while a coefficient of 10 results in motion of up to $6.6$ pixels. More detail about motion can be found in Table \ref{table:motionstatistics}.
+
 \begin{table}[h!]
 \begin{center}
     \begin{tabular}{c | c | c}
@@ -99,38 +123,17 @@ In our second benchmarking test, we consider the case of current \textit{K2} mot
         2 & $0.38\pm0.32$ & 1.12 \\
 				5 & $1.04\pm0.75$ & 2.8 \\
 				10 & $2.04\pm1.75$ & 6.6 \\
-				20 & $3.16\pm1.75$ & 11.2 \\
    \end{tabular}
 	 \caption{Motion coefficients and corresponding pixel motion for \textit{K2} C03 target EPIC 205998445.}
 	 \label{table:motionstatistics}
 \end{center}
 \end{table}
 
-With real \textit{K2} motion applied, sensitivity variation parameters were adjusted until CDPP versus $Kp$ Mag correspended to the trend of real \textit{K2} observations. We found that a stochastic distribution of sensitivity with ${\sim}1\%$ variation between pixels and ${\sim}5\%$ variation within pixels, from center to edge resulted in benchmark test two following the expected trend most similarly. A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector_sensitivity}.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=.5\linewidth]{k2_benchmark.pdf}
-	\caption{CDPP of our simulated light curves with \textit{K2} motion compared to real \textit{K2} targets as a function of $Kp$ Mag.}
-	\label{fig:1motion}
-\end{figure}
-
-For campaigns up to 17, stellar PSFs already traverse various regions of sensitivity variation on the CCD due to pointing instability. As spacecraft motion increases, PSFs will move more dramatically across many pixels, which will contribute significant noise to sputtering-\textit{K2} light curves.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\linewidth]{detector_sensitivity.eps}
-	\caption{(a) A sample detector with sensitivity variation and no stellar targets, where white represents 100\% photon capture rate, and the shaded regions have lower values for quantum sensitivity. Note that our model peaks in sensitivity at the center of each pixel and falls off towards the edges. There is also random variation in sensitivity between pixels. (b) A Stellar PSF mathematically simulated onto the detector at the sub-pixel level. The sensitivity variation has been exaggerated in this simulation to demonstrate the variation in sub-pixel fluxes. (c) The final interpolated image. The value of each pixel is the integral over $x$ and $y$ of the sub-pixel flux.}
-	\label{fig:detector_sensitivity}
-\end{figure}
-
-\subsection{High Roll}
-
-To test how PLD performs on targets with high motion relative to the detector, we inject motion vectors with various coefficients into our synthetic models. A coefficient of 1 corresponds to physical \textit{K2} motion (maximum of $\sim 0.56$ pixels), while a coefficient of 20 results in motion of up to $11.2$ pixels.
+Our method to increase motion involved simply multiplying the pixel offset due to current \textit{K2} motion by constant coefficients. This ensured the target traversed more pixels over a wider range of the detector while keeping the calculation simple enough to avoid introducing new opportunity for error. Because it is still unclear exactly how increased motion will manifest in the spacecraft's observations when fuel is expended, we opted to examine the simplest case. It should be noted that this may not be the most appropriate treatment for all de-trending methods, but because the method used in the \texttt{EVEREST} pipeline (pixel level decorrelation) is agnostic to cetroid position, our treatment of motion is thorough enough for the goal of testing noise-removal methods.
 
 \section{Results}
 
-The two sources of noise presented above -- pixel crowding and detector sensitivity variation -- have been obstacles for \textit{K2} de-trending pipelines. In the following section, we present methods to address both sources of noise and recover more accurate light curves.
+With a robust forward model of \textit{K2} established, including both motion and sensitivity variation, we were able to apply our de-trending methods to stars with various tiers of increased motion to predict and understand the results of thruster failure. To elaborate on the results of our test, we first discuss the details of our de-trending methods (\S 3.1), and then take a look at the application of these methods to our simulated data (\S 3.2).
 
 \subsection{PLD}
 
@@ -174,20 +177,33 @@ The final model $\textbf{m}$ can be found by solving $\textbf{m} = \textbf{X} \c
 
 \subsection{Motion Tests}
 
-When de-trended with second order PLD, our synthetic light curves align with the noise of original \textit{Kepler} observations for motion coefficients of 1x, 2x, and 5x. 10x motion shows increased noise in the de-trended light curve, but still performs better than observations from the ground. A detailed look at these results can be found in Fig. \ref{fig:detmotion}.
+When de-trended with second order PLD, our synthetic light curves align with the noise of original \textit{Kepler} observations for motion coefficients of 1x and 2x. 5x and 10x motion show increased noise in the de-trended light curve, but still perform better than observations from the ground. A detailed look at these results can be found in Figure \ref{fig:detmotion}.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=.5\linewidth]{detmotion.png}
-	\caption{De-trended CDPP for synthetic targets with 1x to 20x motion versus original \textit{Kepler} noise as a function of $Kp$ Mag.}
+	\caption{De-trended CDPP for synthetic targets with 1x, 2x, 5x, and 10x motion versus noise of \textit{Kepler} observations as a function of $Kp$ Mag.}
 	\label{fig:detmotion}
 \end{figure}
+
+These results were achieved by applying second order PLD to pixels within an aperture around our simulated stars. The aperture is defined to exclude extraneous background and photon noise in order to maximize light from our target. In applications for real targets, it is often necessary to also consider nearby bright stars when defining an aperture. Future consideration will be given to automating aperture definitions, particularly because high motion PSFs will traverse more pixels and will therefore have a higher likelihood of crowding.
+
+Our tests found that \texttt{EVEREST} and PLD are capable of removing instrumental noise from light curves of simulated targets with significantly increased magnitude of motion. The question surrounding the usefulness of high-motion data is very relevant to making decisions about the future of \textit{K2} observations, and our hope is to emphasize the potential value in continued observation and contribute to the de-trending of future data.
 
 \section{Discussion}
 
 \subsection{Focus Changes}
 
-When \textit{TESS} launches, it will begin observation with a known focusing issue, resulting in larger stellar PSFs. Further, the space telescope's trajectory will cause a periodic variation in the incident sunlight on the telescope, which will affect the quantum sensitivity of pixels. Periodically changing sensitivity will cause \textit{TESS} PSFs to ``breathe" as the temperature rises and falls, and apertures around \textit{TESS} targets will need to expand and contract correspondingly to effectively capture the desired stellar signal.
+Due to the internal optics of the Transiting Exoplanet Survey Satellite (\textit{TESS}), observed stellar PSFs will be large relative to the pixels on the CCD. Further, the space telescope's trajectory will cause a periodic variation in the incident sunlight on the telescope, which will affect the quantum sensitivity of pixels. Periodically changing sensitivity could cause \textit{TESS} PSFs to ``breathe" as the temperature rises and falls, and apertures around \textit{TESS} targets will need to expand and contract correspondingly to effectively capture the desired stellar signal. Our forward model serves as an established simulation for cases of time-variable PSFs due to both motion and periodic sensitivity changes.
+
+
+\subsection{Increased \textit{TESS} Motion}
+
+In the instance that \textit{TESS} also faces motion issues, there will be a significant need to test de-trending methods with an emphasis on defining ideal apertures. With a combination of large PSFs and increased noise, apertures and associated aperture-based PLD methods will be an essential piece of our noise-removal strategy for \textit{TESS}.
+
+\subsection{Ground-based Observations}
+
+
 
 \section{Using \texttt{scope}}
 
