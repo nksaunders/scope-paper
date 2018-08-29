@@ -79,7 +79,7 @@ Our model for the sensitivity variation was chosen to capture the same noise mag
 
 First we considered the no-motion case. For a large population of simulated targets with randomly generated stellar magnitude and detector position, the noise versus magnitude trend should closely follow that of the original \textit{Kepler} mission. The results of  Benchmark Test 1 are shown in Figure \ref{fig:nomotion}, where we plot the CDPP of our simulated light curves with no motion against CDPP of original \textit{Kepler} light curves as a function of \textit{Kepler} Magnitude ($Kp$ Mag).
 
-To most accurately capture the characteristics of \textit{K2} data when analyzing the noise contributed by quantum sensitivity variation, our model included two sources of synthetic noise -- photon noise and background noise -- which contribute to the trend of increased noise for higher magnitude targets. Benchmark Test 1 serves to constrain the levels of injected photon noise and background noise. We
+To most accurately capture the characteristics of \textit{K2} data when analyzing the noise contributed by quantum sensitivity variation, our model included two sources of synthetic noise -- photon noise and background noise -- which contribute to the trend of increased noise for higher magnitude targets. Benchmark Test 1 serves to constrain the levels of injected photon noise and background noise. The test consisted of plotting the CDPP for 1,000 targets from the original \textit{Kepler} mission and calculating the median value for each $Kp$ Mag at intervals of 0.5. Next we generated five synthetic light curves for each 0.5-Mag interval, with the following random variation of parameters: centroid position of PSF varied by up to 0.2 pixels in both $x$ and $y$, $\sigma_x$ and $\sigma_y$ varied up to 10\% (${\sim}0.05$ pixels), correlation coefficient $\rho$ varied up to 40\%, and inter-pixel sensitivity varied up to 1\%. Each of these five simulated light curves is plotted against the \textit{Kepler} noise trend. This test was run iteratively on varied values of both background and photon noise until the slopes of the two trends approximately corresponded. To see the comparative noise of the resultant simulation, see Fig. \ref{fig:nomotion}.
 
 \begin{figure}[h]
 	\centering
@@ -99,7 +99,7 @@ With real \textit{K2} motion applied, sensitivity variation parameters were adju
 	\label{fig:1motion}
 \end{figure}
 
-A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector_sensitivity}.
+A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector_sensitivity}. The calculation used in our simulation does not take the time to generate the sensitivity model and PSF individually, and instead passes the parameters into a once-integrated function. This saves a computational step and speeds up the process. However, we were unable to solve the second integral prior to calculation because the first integral of a Gaussian results in an error function, which is non-analyitic.
 
 \begin{figure}[h]
 	\centering
