@@ -129,7 +129,7 @@ To test how PLD performs on targets with high motion relative to the detector, w
 \end{center}
 \end{table}
 
-Our method to increase motion involved simply multiplying the pixel offset due to current \textit{K2} motion by constant coefficients. This ensured the target traversed more pixels over a wider range of the detector while keeping the calculation simple enough to avoid introducing new opportunity for error. Because it is still unclear exactly how increased motion will manifest in the spacecraft's observations when fuel is expended, we opted to examine the simplest case. It should be noted that this may not be the most appropriate treatment for all de-trending methods, but because the method used in the \texttt{EVEREST} pipeline (pixel level decorrelation) is agnostic to cetroid position, our treatment of motion is thorough enough for the goal of testing noise-removal methods.
+Our method to increase motion involved simply multiplying the pixel offset due to current \textit{K2} motion by constant coefficients. This ensured the target traversed more pixels over a wider range of the detector while keeping the calculation simple enough to avoid introducing new opportunity for error. Because it is still unclear exactly how increased motion will manifest in the spacecraft's observations when fuel is expended, we opted to examine the simplest case. It should be noted that this may not be the most appropriate treatment for all de-trending methods, but because the method used in the \texttt{EVEREST} pipeline (pixel level decorrelation) is agnostic to cetroid position, our treatment of motion is thorough enough for the goal of testing noise-removal methods. \textcolor{red}{\textbf{Figure out how to say more about this.}}
 
 \section{Results}
 
