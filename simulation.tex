@@ -22,7 +22,7 @@
 
 \altaffiltext{1}{Department of Astronomy, University of Washington, Box 351580, Seattle, WA 98195, USA}
 \altaffiltext{2}{Virtual Planetary Laboratory, Seattle, WA 98195, USA}
-\altaffiltext{3}{saunders@baeri.org}
+\altaffiltext{3}{nicholas.k.saunders@nasa.gov}
 
 \begin{abstract}
 
@@ -52,14 +52,14 @@ A stellar PSF was generated with a characteristic two-dimensional Gaussian shape
 F(t)=\sum_{aperture} \iint_{pixel} [s(x,y)P(x,y)\tau (t)]dxdy,\\
 \]
 %
-where $s(x)s(y)$ is the sensitivity variation function, modeled by a sum of polynomials, and $P(x,y)$ is the PSF of the star, centered at $(x_0,y_0)$ with amplitude $A$. $\tau (t)$ is a simulated transit function. The pixel sensitivity model is given by
+where $s(x)s(y)$ is the sensitivity variation function, modeled by a sum of polynomials, and $P(x,y)$ is the PSF of the star, centered at $(x_0,y_0)$ with amplitude $A$. $\tau (t)$ is a simulated transit function. The pixel sensitivity model is given by the bivariate polynomial
 %
 \[
 \tag{2}
 s(x,y) = \sum_n a_{x,n}x^na_{y,n}y^n, \\
 \]
 %
-and the PSF model is given by
+and the PSF model is given by a sum over two-dimensional Gaussians
 %
 \[
 \tag{3}
@@ -77,25 +77,25 @@ This is the same model we fit to the simple aperture photometry (SAP) flux of \t
 
 Our model for the sensitivity variation was chosen to capture the same noise magnitude as real \textit{K2} targets. For our noise metric, we use the Combined Differential Photometric Precision for consistency with \cite{2016AJ....152..100L}. We used a two-step benchmarking process to estimate the magnitude of variation in quantum sensitivity and contribution by photon noise and background noise.
 
-First we considered the no-motion case. For a large population of simulated targets with randomly generated stellar magnitude and detector position, the noise versus magnitude trend should closely follow that of the original \textit{Kepler} mission. The results of  benchmark test one are shown in Figure \ref{fig:nomotion}, where we plot the CDPP of our simulated light curves with no motion against CDPP of original \textit{Kepler} light curves as a function of \textit{Kepler} Magnitude ($Kp$ Mag).
+First we considered the no-motion case. For a large population of simulated targets with randomly generated stellar magnitude and detector position, the noise versus magnitude trend should closely follow that of the original \textit{Kepler} mission. The results of  Benchmark Test 1 are shown in Figure \ref{fig:nomotion}, where we plot the CDPP of our simulated light curves with no motion against CDPP of original \textit{Kepler} light curves as a function of \textit{Kepler} Magnitude ($Kp$ Mag).
 
-To most accurately capture the characteristics of \textit{K2} data when analyzing the noise contributed by quantum sensitivity variation, our model also included two sources of synthetic noise -- photon noise and background noise -- which contribute to the trend of increased noise for higher magnitude targets. Our first benchmarking test serves to constrain the levels of injected photon noise and background noise.
+To most accurately capture the characteristics of \textit{K2} data when analyzing the noise contributed by quantum sensitivity variation, our model included two sources of synthetic noise -- photon noise and background noise -- which contribute to the trend of increased noise for higher magnitude targets. Benchmark Test 1 serves to constrain the levels of injected photon noise and background noise. We
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\linewidth]{kepler_benchmark.pdf}
-	\caption{Photometric precision of our simulated light curves with no motion compared to original \textit{Kepler} targets as a function of $Kp$ Mag. The red trend demonstrates the noise contribution due to photon and background noise.}
+	\caption{Benchmark Test 1: Noise level (CDPP) of our simulated light curves with no motion compared to original \textit{Kepler} targets as a function of $Kp$ Mag. The red trend demonstrates the relationship between $Kp$ Mag and noise for the \textit{Kepler} detector with high pointing precision, with the median represented by the larger red circles outlined in black. Each blue point is a simulated light curve with no motion vectors injected into the centroid position of the PSF. The primary contributors to this trend are photon noise and background noise, which were calibrated in our simulation by matching the slope of the \textit{Kepler} trend.}
 	\label{fig:nomotion}
 \end{figure}
 
-In our second benchmarking test, we consider the case of current \textit{K2} motion. To accomplish this, we injected motion from 1000 cadences of the \textit{K2} target EPIC 205998445, creating a simulated example of a current observation to benchmark our model against \textit{K2} data. EPIC 205998445 is a \textit{K2} C03 star with $Kp = 12.029$ located near the edge of its detector. Statistics about the motion data used in our simulation can be found in Table \ref{table:motionstatistics}.
+In Benchmark Test 2, we consider the case of current \textit{K2} motion. To accomplish this, we injected motion from 1000 cadences of the \textit{K2} target EPIC 205998445, creating a simulated example of a current observation to benchmark our model against \textit{K2} data. EPIC 205998445 is a \textit{K2} C03 star with $Kp = 12.029$ located near the edge of its detector. Statistics about the motion data used in our simulation can be found in Table \ref{table:motionstatistics}.
 
-With real \textit{K2} motion applied, sensitivity variation parameters were adjusted until CDPP versus $Kp$ Mag correspended to the trend of real \textit{K2} observations. We found that a stochastic distribution of sensitivity with ${\sim}1\%$ variation between pixels and ${\sim}5\%$ variation within pixels, from center to edge resulted in benchmark test two following the expected trend most similarly. The results of benchmark test two can be seen in Figure \ref{fig:1motion}.
+With real \textit{K2} motion applied, sensitivity variation parameters were adjusted until CDPP versus $Kp$ Mag correspended to the trend of real \textit{K2} observations. We found that a stochastic distribution of sensitivity with ${\sim}1\%$ variation between pixels and ${\sim}5\%$ variation within pixels, from center to edge resulted in Benchmark Test 2 following the expected trend most similarly. The results of Benchmark Test 2 can be seen in Figure \ref{fig:1motion}.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\linewidth]{k2_benchmark.pdf}
-	\caption{CDPP of our simulated light curves with \textit{K2} motion compared to real \textit{K2} targets as a function of $Kp$ Mag.}
+	\caption{Benchmark Test 2: Noise level (CDPP) of our simulated light curves with \textit{K2} motion compared to real \textit{K2} targets as a function of $Kp$ Mag. The points displayed in green show the noise of 1,000 raw \textit{K2} observations before de-trending with the EVEREST pipeline, and the larger green points outlined in black follow the median of the trend. Each blue point is a simulated target with current \textit{K2} motion and randomly varied initial centroid position and PSF shape. Our simulated data follow the same CDPP vs. $Kp$ Mag relationship as real data, indicating that the sensitivity variation in our model appropriately captures the detector.}
 	\label{fig:1motion}
 \end{figure}
 
@@ -104,7 +104,7 @@ A sample detector with included sensitivity variation can be seen in Figure \ref
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\linewidth]{detector_sensitivity.eps}
-	\caption{(a) A sample detector with sensitivity variation and no stellar targets, where white represents 100\% photon capture rate, and the shaded regions have lower values for quantum sensitivity. Note that our model peaks in sensitivity at the center of each pixel and falls off towards the edges. There is also random variation in sensitivity between pixels. (b) A Stellar PSF mathematically simulated onto the detector at the sub-pixel level. The sensitivity variation has been exaggerated in this simulation to demonstrate the variation in sub-pixel fluxes. (c) The final interpolated image. The value of each pixel is the integral over $x$ and $y$ of the sub-pixel flux.}
+	\caption{(a) A sample detector with sensitivity variation and no stellar targets, where white represents 100\% photon detection efficiency, and the shaded regions have lower values for quantum sensitivity. Note that our model peaks in sensitivity at the center of each pixel and falls off towards the edges. There is also random variation in sensitivity between pixels. (b) A Stellar PSF mathematically simulated onto the detector at the sub-pixel level. The sensitivity variation has been exaggerated in this simulation to demonstrate the variation in sub-pixel fluxes. (c) The final interpolated image. The value of each pixel is the integral over $x$ and $y$ of the sub-pixel flux.}
 	\label{fig:detector_sensitivity}
 \end{figure}
 
@@ -112,17 +112,17 @@ For campaigns up to 17, stellar PSFs already traverse various regions of sensiti
 
 \subsection{Increased Motion}
 
-To test how PLD performs on targets with high motion relative to the detector, we injected motion vectors with various coefficients into our synthetic models. A coefficient of 1 corresponds to physical \textit{K2} motion (maximum of $\sim 0.56$ pixels), while a coefficient of 10 results in motion of up to $6.6$ pixels. More detail about motion can be found in Table \ref{table:motionstatistics}.
+To test how PLD performs on targets with high motion relative to the detector, we injected motion vectors with various coefficients into our synthetic models. A coefficient of 1 corresponds to physical \textit{K2} motion (maximum of $\sim 0.59$ pixels), while a coefficient of 10 results in motion of up to $5.85$ pixels. More detail about motion can be found in Table \ref{table:motionstatistics}.
 
 \begin{table}[h!]
 \begin{center}
-    \begin{tabular}{c | c | c}
-        Motion Coefficient & Motion (pixels) & Max Motion (pixels) \\
+    \begin{tabular}{c | c | c | c | c}
+        Coefficient & Motion (pix) & Max Motion (pix) & Motion (arcsec) & Max Motion (arcsec) \\
         \hline \hline
-        1 & $0.37\pm0.16$ & 0.56 \\
-        2 & $0.38\pm0.32$ & 1.12 \\
-				5 & $1.04\pm0.75$ & 2.8 \\
-				10 & $2.04\pm1.75$ & 6.6 \\
+        1 & $0.17\pm0.12$ & 0.59 & $0.67\pm0.47$ & 2.33 \\
+        2 & $0.34\pm0.24$ & 1.17 & $1.34\pm0.95$ & 4.66 \\
+				5 & $0.84\pm0.59$ & 2.93 & $3.34\pm2.37$ & 11.65 \\
+				10 & $1.68\pm1.19$ & 5.85 & $6.68\pm4.74$ & 23.30 \\
    \end{tabular}
 	 \caption{Motion coefficients and corresponding pixel motion for \textit{K2} C03 target EPIC 205998445.}
 	 \label{table:motionstatistics}
@@ -137,43 +137,9 @@ With a robust forward model of \textit{K2} established, including both motion an
 
 \subsection{PLD}
 
-After generating a set of light curves representative of extreme motion \textit{K2} observations, we tested systematics removal methods to assess how potentially valuable sputtering-\textit{K2} data would be. To de-trend our synthetic light curves, we used a variant of the method applied in the EPIC Variability Extraction and Removal for Exoplanet Science Targets (\texttt{EVEREST}) pipeline. The \texttt{EVEREST} pipeline utilizes a method called pixel level decorrelation (PLD), developed by \cite{0004-637X-805-2-132} for the \textit{Spitzer} Space Telescope. For a more detailed treatment of PLD, see the first two \texttt{EVEREST} papers \citep{2016AJ....152..100L,2017arXiv170205488L}.
+After generating a set of light curves representative of extreme motion \textit{K2} observations, we tested systematics removal methods to assess how potentially valuable sputtering-\textit{K2} data would be. To de-trend our synthetic light curves, we used a variant of the method applied in the EPIC Variability Extraction and Removal for Exoplanet Science Targets (\texttt{EVEREST}) pipeline. The \texttt{EVEREST} pipeline utilizes a method called pixel level decorrelation (PLD), developed by \cite{0004-637X-805-2-132} for the \textit{Spitzer} Space Telescope.
 
-PLD seeks to remove noise generated by intra-pixel sensitivity variation independent of apparent motion of the star. This method is particularly effective for \textit{K2} light curves despite the magnitude of apparent motion being high, and \texttt{EVEREST} can recover \textit{Kepler}-like accuracy in exoplanet light curves for targets up to $\text{Kp} = 15$.
-
-The likelihood ($\mathcal{L}$) of the observed data given our model can be described by a Gaussian distribution given by
-%
-\[
-\mathcal{L} = C * \exp{\left[- \frac{1}{2}\left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right)^\top \cdot \pmb{\Sigma}^{-1} \cdot \left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right) \right]}, \\
-\]
-%
-where $\textbf{y}$ is the raw flux light curve, $\textbf{X}$ is the design matrix constructed from the basis vectors of the intrumental noise in each pixel, $\pmb{\Sigma}$ is the covariance matrix between pixels, $C$ is a normalization constant, and $\textbf{w}$ is the array of weights. By solving for the derivative of the natural log of this likelihood with respect to $\textbf{w}$, we locate the distribution peak and calculate a maximum likelihood estimate of the model parameters.
-%
-\[
-\ln{\mathcal{L}} = - \frac{1}{2}\left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right)^\top \cdot \pmb{\Sigma}^{-1} \cdot \left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right) + C'. \\
-\]
-%
-$C'$ is a constant and becomes $0$ when we differentiate with respect to $\textbf{w}$:
-\[
-\frac{d\ln{\mathcal{L}}}{d \textbf{w}} = 0 \\
-\]
-%
-\[
-\frac{d}{d \textbf{w}} \left[ - \frac{1}{2} \left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right)^\top \cdot \pmb{\Sigma}^{-1} \cdot \left(\textbf{y} - \textbf{X}\cdot\textbf{w} \right) \right] = 0 \\
-\]
-%
-Now, we solve for $\textbf{w}$ to identify the ideal weights for our noise model.
-%
-\[
-\textbf{w} = \left( \textbf{X}^\top \cdot \pmb{\Sigma}^{-1} \cdot \textbf{X} \right)^{-1} \cdot \textbf{X}^\top \cdot \pmb{\Sigma}^{-1} \cdot \textbf{y} \\
-\]
-%
-The final model $\textbf{m}$ can be found by solving $\textbf{m} = \textbf{X} \cdot \textbf{w}$,
-%
-\[
-\textbf{m} = \textbf{X} \cdot \left( \textbf{X}^\top \cdot \pmb{\Sigma}^{-1} \cdot \textbf{X} \right)^{-1} \cdot \textbf{X}^\top \cdot \pmb{\Sigma}^{-1} \cdot \textbf{y}. \\
-\]
-%
+PLD seeks to remove noise generated by intra-pixel sensitivity variation independent of apparent motion of the star. This method is particularly effective for \textit{K2} light curves despite the magnitude of apparent motion being high, and \texttt{EVEREST} can recover \textit{Kepler}-like accuracy in exoplanet light curves for targets up to $\text{Kp} = 15$. For a more detailed treatment of PLD, see the paper by \cite{0004-637X-805-2-132} and the first two \texttt{EVEREST} papers \citep{2016AJ....152..100L,2017arXiv170205488L}.
 
 \subsection{Motion Tests}
 
@@ -182,7 +148,7 @@ When de-trended with second order PLD, our synthetic light curves align with the
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\linewidth]{detmotion.png}
-	\caption{De-trended CDPP for synthetic targets with 1x, 2x, 5x, and 10x motion versus noise of \textit{Kepler} observations as a function of $Kp$ Mag.}
+	\caption{Noise level (CDPP) of simulated light curves after de-trending with $2^{\text{nd}}$ order Pixel Level Decorrelation (PLD) as a function of $Kp$ Mag. The green points show noise levels of 1,000 targets from the original \textit{Kepler} mission with the median represented by the larger green circles outlined in black. De-trended simulated light curves with 1x, 2x, 4x, and 10x current \textit{K2} motion are represented by the solid trends, and each point is the mean of 5 simulated light curves of a given $Kp$ Mag with slightly varied PSF shape and initial centroid positions. We achieve sub-400 ppm CDPP up to 5x motion for targets up to $Kp \text{ Mag}=15.5$, and de-trended light curves perform better that group based observation up to 10x motion.}
 	\label{fig:detmotion}
 \end{figure}
 
