@@ -100,7 +100,7 @@ With real \textit{K2} motion applied, sensitivity variation parameters were adju
 	\label{fig:1motion}
 \end{figure}
 
-A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector_sensitivity}. The calculation used in our simulation does not take the time to generate the sensitivity model and PSF individually, and instead passes the parameters into a once-integrated function. This saves a computational step and speeds up the process. However, we were unable to solve the second integral prior to calculation because the first integral of a Gaussian results in an error function, which is non-analyitic.
+A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector_sensitivity}. The calculation used in our simulation does not generate the sensitivity model and PSF individually, and instead passes the parameters into a singl -integrated function. This saves a computational step and speeds up the process. However, we were unable to solve the second integral prior to calculation because the first integral of a Gaussian results in an error function, which is non-analyitic.
 
 \begin{figure}[h]
 	\centering
