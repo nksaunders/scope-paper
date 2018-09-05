@@ -22,7 +22,7 @@ m_mags = np.arange(0., 21., 1)
 
 _, kp, cdpp6r, _, _, _, _, _, _ = np.loadtxt(os.path.join(EVEREST_SRC, 'missions', 'k2', 'tables', 'c03_nPLD.cdpp'), unpack = True, skiprows = 2)
 fig, ax = pl.subplots(1, figsize=(7.5,5))
-ax.scatter(kp, cdpp6r, color='palegreen', alpha = 0.05, zorder = -1)
+ax.scatter(kp, cdpp6r, color='red', alpha = 0.05, zorder = -1)
 ax.set_rasterization_zorder(-1)
 bins = np.arange(7.5,18.5,0.5)
 by = np.zeros_like(bins) * np.nan
@@ -30,7 +30,7 @@ for b, bin in enumerate(bins):
     i = np.where((cdpp6r > -np.inf) & (cdpp6r < np.inf) & (kp >= bin - 0.5) & (kp < bin + 0.5))[0]
     if len(i) > 10:
         by[b] = np.median(cdpp6r[i])
-ax.scatter(bins, by, label = 'Raw K2', color='palegreen', edgecolors='k', s=50)
+ax.plot(bins, by, 'ro', label = 'Kepler', markeredgecolor = 'k')
 for iter in range(niter):
     cdpp = np.zeros_like(mags)
     for i, mag in enumerate(mags):
