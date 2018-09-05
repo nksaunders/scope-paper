@@ -36,7 +36,7 @@ def Plot():
     # Compare zero-motion synthetic data to original Kepler raw CDPP
     _, kepler_kp, kepler_cdpp6 = np.loadtxt(os.path.join(EVEREST_SRC, 'missions', 'k2', 'tables', 'kepler.cdpp'), unpack = True)
     fig, ax = pl.subplots(1)
-    ax.scatter(kepler_kp, kepler_cdpp6, color='red', alpha = 0.01, zorder = -1)
+    ax.scatter(kepler_kp, kepler_cdpp6, color='palegreen', alpha = 0.01, zorder = -1)
     ax.set_rasterization_zorder(0)
     bins = np.arange(7.5,18.5,0.5)
     by = np.zeros_like(bins) * np.nan
@@ -44,7 +44,7 @@ def Plot():
         i = np.where((kepler_cdpp6 > -np.inf) & (kepler_cdpp6 < np.inf) & (kepler_kp >= bin - 0.5) & (kepler_kp < bin + 0.5))[0]
         if len(i) > 10:
             by[b] = np.median(kepler_cdpp6[i])
-    ax.plot(bins, by, 'ro', label = 'Kepler', markeredgecolor = 'k')
+    ax.scatter(bins, by, label = 'Raw K2', color='palegreen', edgecolors='k', s=50)
 
     mags = np.arange(10., 16., .5)
 
