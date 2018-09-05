@@ -30,7 +30,7 @@ for b, bin in enumerate(bins):
     i = np.where((cdpp6r > -np.inf) & (cdpp6r < np.inf) & (kp >= bin - 0.5) & (kp < bin + 0.5))[0]
     if len(i) > 10:
         by[b] = np.median(cdpp6r[i])
-ax.plot(bins, by, 'ro', label = 'Kepler', markeredgecolor = 'k')
+ax.plot(bins, by, 'ro', label = 'Raw K2', markeredgecolor = 'k')
 for iter in range(niter):
     cdpp = np.zeros_like(mags)
     for i, mag in enumerate(mags):

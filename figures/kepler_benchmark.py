@@ -44,7 +44,7 @@ def Plot():
         i = np.where((kepler_cdpp6 > -np.inf) & (kepler_cdpp6 < np.inf) & (kepler_kp >= bin - 0.5) & (kepler_kp < bin + 0.5))[0]
         if len(i) > 10:
             by[b] = np.median(kepler_cdpp6[i])
-    ax.scatter(bins, by, label = 'Raw K2', color='palegreen', edgecolors='k', s=50)
+    ax.scatter(bins, by, label = 'Kepler', color='palegreen', edgecolors='k', s=50)
 
     mags = np.arange(10., 16., .5)
 
