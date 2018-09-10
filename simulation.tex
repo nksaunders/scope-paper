@@ -41,7 +41,7 @@ In this paper, we present an approach to characterize increased noise due to hig
 
 \section{Methods}
 
-Effective removal of instrumental noise requires a thorough understanding of its source. Stellar motion relative to the pixel sensitivity variation on the \textit{Kepler} CCD causes fluctuation in the amount of light received by the telescope detector over time. In order to accurately simulate the instrumental noise characteristic of \textit{K2} light curves, it is necessary to generate a forward model for the pixel sensitivity variation of the CCD. Light curves that were simulated using this sensitivity variation model are adequate to serve as well-understood sample targets on which to determine noise levels resulting from light curves generated under conditions of high roll magnitude and apply de-trending methods. To accurately represent the \textit{Kepler} CCD, we generated a model for the detector that included both inter-pixel sensitivity variation between pixels and intra-pixel sensitivity variation within each pixel.
+Effective removal of instrumental noise requires a thorough understanding of its source. Stellar motion relative to the pixel sensitivity variation on the \textit{Kepler} CCD causes fluctuation in the amount of light recorded by the telescope detector over time. In order to accurately simulate the instrumental noise characteristic of \textit{K2} light curves, it is necessary to generate a forward model for the pixel sensitivity variation of the CCD. Light curves that were simulated using this sensitivity variation model are adequate to serve as well-understood sample targets on which to determine noise levels resulting from light curves generated under conditions of high roll magnitude and apply de-trending methods. To accurately represent the \textit{Kepler} CCD, we generated a model for the detector that included both inter-pixel sensitivity variation between pixels and intra-pixel sensitivity variation within each pixel.
 
 \subsection{PSF Model}
 
@@ -64,8 +64,8 @@ with coefficients $a_{x,n}, a_{y,n}$ defined to result in a sensitivity map that
 \[
 \tag{3}
 \begin{split}
-P(x,y) & = \sum_m \frac{1}{2\pi\sigma_{x,m}\sigma_{x,n}\sqrt{1-\rho_m^2}} \text{exp}\left[ -\frac{1}{2(1-\rho_m^2)} \left( \frac{(x-x_{0,m})^2}{2\sigma_{x,m}^2} \right. \right. \\
-			 & \phantom{xxxxx} \left. \left. + \frac{(y-y_{0,m})^2}{2\sigma_{y,m}^2} - \frac{2\rho_m  (x-x_{0,m})(y-y_{0,m})}{\sigma_{x,m}\sigma_{y,m}} \right) \right]
+P(x,y) & = A \sum_m \frac{1}{2\pi\sigma_{x,m}\sigma_{x,n}\sqrt{1-\rho_m^2}} \text{exp}\left[ -\frac{1}{2(1-\rho_m^2)} \left( \frac{(x-x_{0,m})^2}{2\sigma_{x,m}^2} \right. \right. \\
+			 & \phantom{xxxxxx} \left. \left. + \frac{(y-y_{0,m})^2}{2\sigma_{y,m}^2} - \frac{2\rho_m  (x-x_{0,m})(y-y_{0,m})}{\sigma_{x,m}\sigma_{y,m}} \right) \right]
 \end{split}
 \]
 %
@@ -114,7 +114,7 @@ For campaigns up to 17, stellar PSFs already traverse various regions of sensiti
 
 \subsection{Increased Motion}
 
-To test how PLD performs on targets with high motion relative to the detector, we injected motion vectors with various coefficients into our synthetic models. A coefficient of 1 corresponds to physical \textit{K2} motion (maximum of $\sim 0.59$ pixels), while a coefficient of 10 results in motion of up to $5.85$ pixels. More detail about the motion used in our simulations can be found in Table \ref{table:motionstatistics}.
+To test how PLD performs on targets with high motion relative to the detector, we injected motion vectors with various coefficients into our synthetic models. A coefficient of 1 corresponds to typical \textit{K2} motion (maximum of $\sim 0.59$ pixels), while a coefficient of 10 results in motion of up to $5.85$ pixels. More detail about the motion used in our simulations can be found in Table \ref{table:motionstatistics}.
 
 \begin{table}[h!]
 \begin{center}
@@ -135,7 +135,7 @@ Our method to increase motion involved simply multiplying the pixel offset due t
 
 \section{Results}
 
-With a robust forward model of \textit{K2} established, including both motion and sensitivity variation, we were able to apply our de-trending methods to stars with various tiers of increased motion to predict and understand the results of thruster failure. To elaborate on the results of our test, we first introduce our de-trending methods (\S 3.1), and then take examine the application of these methods to our simulated data (\S 3.2).
+With a robust forward model of \textit{K2} established, including both motion and sensitivity variation, we were able to apply our de-trending methods to stars with various tiers of increased motion to predict and understand the results of thruster failure. To elaborate on the results of our test, we first introduce our de-trending methods (\S 3.1), and then examine the application of these methods to our simulated data (\S 3.2).
 
 \subsection{PLD}
 
@@ -152,7 +152,7 @@ Synthetic targets with 2x current \textit{K2} motion achieved \textit{Kepler}-li
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\linewidth]{detmotion.png}
-	\caption{Noise level (CDPP) of simulated light curves after de-trending with $2^{\text{nd}}$ order Pixel Level Decorrelation (PLD) as a function of $Kp$ Mag. The green points show noise levels of 1,000 targets from the original \textit{Kepler} mission with the median represented by the larger green circles outlined in black. De-trended simulated light curves with 1x, 2x, 4x, and 10x current \textit{K2} motion are represented by the solid trends, and each point is the mean of 5 simulated light curves of a given $Kp$ Mag with slightly varied PSF shape and initial centroid positions. We achieve sub-400 ppm CDPP up to 5x motion for targets up to $Kp \text{ Mag}=15.5$, and de-trended light curves perform better that group based observation up to 10x motion.}
+	\caption{Noise level (CDPP) of simulated light curves after de-trending with $2^{\text{nd}}$ order Pixel Level Decorrelation (PLD) as a function of $Kp$ Mag. The green points show noise levels of 1,000 targets from the original \textit{Kepler} mission with the median represented by the larger green circles outlined in black. De-trended simulated light curves with 1x, 2x, 4x, and 10x current \textit{K2} motion are represented by the solid trends, and each point is the mean of 5 simulated light curves of a given $Kp$ Mag with slightly varied PSF shape and initial centroid positions. We achieve sub-400 ppm CDPP up to 5x motion for targets up to $Kp \text{ Mag}=15.5$, and de-trended light curves up to 10x motion perform better that group based observation (for which $<1,000$ ppm is difficult to achieve).}
 	\label{fig:detmotion}
 \end{figure}
 
@@ -191,20 +191,20 @@ import scope
 star = scope.Target()
 \end{lstlisting}
 %
-A light curve can be generated by calling the \texttt{GenerateLightCurve()} function, which returns a light curve of target pixel files (\texttt{tpf}), a one-dimensional flux light curve (\texttt{flux}), and a light curve of the error in each pixel (\texttt{ferr}):
+A light curve can be generated by calling the \texttt{GenerateLightCurve()} function, which returns an array of image files (\texttt{tpf}), a one-dimensional flux light curve (\texttt{flux}), and an array of matrices containing the error in each pixel (\texttt{ferr}):
 %
 \begin{lstlisting}[language=Python]
 tpf, flux, ferr = star.GenerateLightCurve()
 \end{lstlisting}
 %
-After a target is created, transits, variability, or neighbors can be added with the following functions:
+After a target is created, transits, variability, or neighbors can be added with the following functions (with example parameters provided):
 %
 \begin{lstlisting}[language=Python]
-star.AddTransit()
-star.AddVariability()
-star.AddNeighbor()
+star.AddTransit(depth=.01, per=15, dur=.5, t0=5.)
+star.AddVariability(var_amp=0.005, freq=0.25)
+star.AddNeighbor(magdiff=1., dist=1.7)
 \end{lstlisting}
-Alternatively, a \texttt{Target} can be instantiated with added features by changing the following boolean parameters:
+Alternatively, a \texttt{Target} can be instantiated containing added features with default parameters by changing the following boolean parameters:
 %
 \begin{lstlisting}[language=Python]
 star = scope.Target(transit=True, variable=True, neighbor=True)
@@ -220,6 +220,8 @@ To de-trend with second order PLD, run
 \begin{lstlisting}[language=Python]
 star.Detrend()
 \end{lstlisting}
+
+Documentation and examples can be found online at nksaunders.github.io/scope. The code is publicly available at github.com/nksaunders/scope.
 
 \section{Conclusions}
 
