@@ -9,7 +9,7 @@ setup_text_plots(fontsize=10, usetex=True)
 
 # create Target() object and generate a single cadence of a light curve
 star = scope.Target()
-fpix, flux, ferr = star.GenerateLightCurve(ncadences=1)
+fpix, flux, ferr = star.GenerateLightCurve(ncadences=1, mag=11)
 
 # initialize sub-pixel array
 sub_pixel = np.zeros((994,994))
@@ -17,7 +17,7 @@ sub_pixel = np.zeros((994,994))
 # generate detector and normalize variation between 0 and 1
 # sensitivity variation is much higher for the purpose of displaying sub-pixel flux
 star.DisplayDetector()
-detector = 1+(star.detector/(np.max(np.abs(star.detector))))
+detector = 1+(star.detector/(np.max(np.abs(star.detector))))*.15
 
 # iterate through each sub-pixel index
 countx = 0; county = 0
@@ -57,9 +57,9 @@ fig, (ax0, ax1, ax2) = pl.subplots(1, 3, figsize=(16,4))
 
 fig0 = ax0.imshow(detector, cmap='gray', origin='lower', extent=[-0.5,6.5,-0.5,6.5])
 ax0.set_xlabel('(a)')
-fig1 = ax1.imshow(sub_pixel, vmin=0, vmax=50000, origin='lower', extent=[-0.5,6.5,-0.5,6.5])
+fig1 = ax1.imshow(sub_pixel, vmin=0, vmax=40000, origin='lower', extent=[-0.5,6.5,-0.5,6.5])
 ax1.set_xlabel('(b)')
-fig2 = ax2.imshow(fpix[0], vmin=0, vmax=50000, origin='lower')
+fig2 = ax2.imshow(fpix[0], vmin=0, vmax=40000, origin='lower')
 ax2.set_xlabel('(c)')
 
 pl.colorbar(fig0, ax=ax0, fraction=0.046, pad=0.04)
@@ -68,6 +68,6 @@ pl.colorbar(fig2, ax=ax2, fraction=0.046, pad=0.04)
 
 pl.tight_layout()
 
-pl.savefig('detector_sensitivity', format='eps', bbox_inches='tight')
+pl.savefig('detector_sensitivity.pdf', format='pdf', bbox_inches='tight')
 
 pl.show()
