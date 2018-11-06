@@ -7,35 +7,39 @@
 \usepackage{caption,subcaption}
 \usepackage{xcolor}
 \usepackage{listings}
+\usepackage{hyperref}
 \captionsetup[figure]{labelsep=space,singlelinecheck=false}
 \captionsetup[subfigure]{justification=centering}
-% \epstopdfDeclareGraphicsRule{.pdf}{png}{.png}{convert #1 \OutputFile}
-\graphicspath{ {images/} }
+\graphicspath{ {figures/} }
 \DeclareGraphicsExtensions{.png,.pdf}
 
 \begin{document}
 
-\title{A Software Package to Simulate CCD Photometry: Application to High-Motion \textit{K2} Observations}
+% \title{A Software Package to Simulate CCD Photometry: Application to High-Motion \textit{K2} Observations}
 
-\author{Nicholas Saunders \altaffilmark{1,2}, Rodrigo Luger \altaffilmark{3,4}, Rory Barnes \altaffilmark{3,4}}
+\title{The Pointing Limits of Transiting Exoplanet Light Curve Characterization with Pixel Level De-correlation}
 
-\altaffiltext{1}{NASA Ames Kepler/K2 Guest Observer Office, Mountain View, CA 94035}
+\author{Nicholas Saunders \altaffilmark{1,2}, Rodrigo Luger \altaffilmark{3,4}, Rory Barnes \altaffilmark{5,6}}
+
+\altaffiltext{1}{NASA Ames Kepler/K2 Guest Observer Office, Mountain View, CA}
 \altaffiltext{2}{nicholas.k.saunders@nasa.gov}
-\altaffiltext{3}{Department of Astronomy, University of Washington, Box 351580, Seattle, WA 98195, USA}
-\altaffiltext{4}{Virtual Planetary Laboratory, Seattle, WA 98195, USA}
+\altaffiltext{3}{Center for Computational Astrophysics, Flatiron Institute, New York, NY}
+\altaffiltext{4}{Flatiron Fellow}
+\altaffiltext{5}{Department of Astronomy, University of Washington, Seattle, WA}
+\altaffiltext{6}{Virtual Planetary Laboratory, Seattle, WA}
 
 \begin{abstract}
 
-	We present \texttt{scope} (Simulated CCD Observations for Photometric Experimentation), a \texttt{python} package to create a forward model of telescope detectors and simulate stellar targets with motion relative to the CCD. The primary application of this package is the simulation of the \textit{Kepler} Space Telescope detector to predict and characterize increased instrumental noise in the spacecraft's final campaigns of observation. As the fuel powering the spacecraft's stabilizing thrusters runs out and thruster fires begin to sputter or fail, stellar Point Spread Functions (PSFs) will experience more extreme and less predictable motion relative to regions of varied sensitivity on the spacecraft detector, generating more noise in transiting exoplanet light curves. Using our simulations, we demonstrate that current de-trending techniques  effectively capture and remove systematics caused by sensitivity variation for spacecraft motion as high as about ten times that currently experienced by \textit{K2}. The \texttt{scope} package is open-source has been generalized to allow custom detector and stellar target parameters. Future applications include simulating observations made by the Transiting Exoplanet Survey Satellite (\textit{TESS}) and ground based observations with synthetic atmospheric interference as testbeds for noise-removal techniques.
+	We present \texttt{scope} (Simulated CCD Observations for Photometric Experimentation), a \texttt{python} package to create a forward model of telescope detectors and simulate stellar targets with motion relative to the CCD. The primary application of this package is the simulation of the \textit{Kepler} Space Telescope detector to predict and characterize increased instrumental noise in the spacecraft's final campaigns of observation. As the fuel powering the spacecraft's stabilizing thrusters ran out and thruster fires began to sputter and fail, stellar Point Spread Functions (PSFs) experienced more extreme and less predictable motion relative to regions of varied sensitivity on the spacecraft detector, generating more noise in transiting exoplanet light curves. Using our simulations, we demonstrate that current de-trending techniques effectively capture and remove systematics caused by sensitivity variation and allow space telescopes to perform better than ground-based observation for spacecraft motion as high as about ten times that currently experienced by \textit{K2}. The \texttt{scope} package is open-source and has been generalized to allow custom detector and stellar target parameters. Future applications include simulating observations made by the Transiting Exoplanet Survey Satellite (\textit{TESS}) and ground based observations with synthetic atmospheric interference as testbeds for noise-removal techniques.
 
 \end{abstract}
 
 \section{Introduction}
 \label{sec:intro}
 
-Despite the failure of two reaction wheels in 2012 and 2013, the \textit{Kepler} Space Telescope has continued to produce valuable data in its new configuration, \textit{K2}, with significantly higher precision than ground based telescopes \citep{2014PASP..126..398H}. However, due to the unstable pointing caused by the missing reaction wheels, targets have significant motion relative to the quantum sensitivity variation of the telescope detector, creating noise in \textit{K2} light curves. A number of attempts have been made to isolate and remove the instrumental noise from \textit{K2} data \citep{2014PASP..126..948V,2015A&A...579A..19A, 0004-637X-806-1-30, 2015MNRAS.454.4159H, 2015MNRAS.447.2880A, 2016MNRAS.459.2408A}. Through the application of data processing pipelines, namely the EPIC Variability Extraction and Removal for Exoplanet Science Targets (\texttt{EVEREST}) pipeline developed by \cite{2016AJ....152..100L}, the noise in \textit{K2} light curves can be reduced to the level of the original \textit{Kepler} mission for up to $15^{\text{th}}$ magnitude \citep{2017arXiv170205488L}.
+Despite the failure of two reaction wheels in 2012 and 2013, the \textit{Kepler} Space Telescope has continued to produce valuable data in its new configuration, \textit{K2}, with significantly higher precision than ground based telescopes \citep{2014PASP..126..398H}. However, due to the unstable pointing caused by the missing reaction wheels, targets have significant motion relative to the quantum sensitivity variation of the telescope detector, creating noise in \textit{K2} light curves. A number of attempts have been made to isolate and remove the instrumental noise from \textit{K2} data \citep{2014PASP..126..948V,2015A&A...579A..19A, 0004-637X-806-1-30, 2015MNRAS.454.4159H, 2015MNRAS.447.2880A, 2016MNRAS.459.2408A}. Through the application of data processing pipelines, namely the EPIC Variability Extraction and Removal for Exoplanet Science Targets (\texttt{EVEREST}) pipeline developed by \cite{2016AJ....152..100L}, the noise in \textit{K2} light curves can be reduced to the level of the original \textit{Kepler} mission for up to $15^{\text{th}}$ magnitude \citep{2018AJ....156...99L}.
 
-However, as the \textit{Kepler} Space Telescope runs out of fuel, its motion due to thruster fires is expected to become less predictable and the magnitude of targets' motion relative to the detector will increase. With higher motion, targets will traverse more regions of varied pixel sensitivity, contributing more noise to the light curves of \textit{K2} targets. Eventually, when thruster fuel has been depleted entirely or the fuel level becomes too low for useful correction, the telescope may enter a phase of constant drift, at which point targets will traverse many pixels across the detector. This will also increase the likelihood of flux pollution from neighbors, as stellar PSFs may overlap over the course of a campaign.
+However, as the \textit{Kepler} Space Telescope ran out of fuel, its motion due to thruster fires became less predictable and the magnitude of targets' motion relative to the detector increased. With higher motion, targets traverse more regions of varied pixel sensitivity, contributing more noise to the light curves of \textit{K2} targets. Eventually, when thruster fuel has been depleted entirely or the fuel level becomes too low for useful correction, the telescope may enter a phase of constant drift, at which point targets will traverse many pixels across the detector. This will also increase the likelihood of flux pollution from neighbors, as stellar PSFs may overlap over the course of a campaign.
 
 In this paper, we present an approach to characterize increased noise due to high motion and assess noise-removal methods. \S 2 describes the mathematical methods of our simulation, \S 3 explores the results of our testing, \S 4 elaborates on future applications of this work, \S 5 provides usage examples, and \S 6 discusses our conclusions.
 
@@ -56,10 +60,10 @@ where $s(x,y)$ is the sensitivity variation function, modeled by a low order pol
 %
 \[
 \tag{2}
-s(x,y) = \sum_n a_{x,n}x^na_{y,n}y^n, \\
+s(x,y) = \sum_n a_{x,n}x^n\sum_m a_{y,m}y^m, \\
 \]
 %
-with coefficients $a_{x,n}, a_{y,n}$ defined to result in a sensitivity map that peaks in the center of each pixel and falls off toward the edge. The PSF model is given by a sum over two-dimensional Gaussians
+with coefficients $a_{x,n}, a_{y,m}$ defined to result in a sensitivity map that peaks in the center of each pixel and falls off toward the edge. The PSF model is given by a sum over two-dimensional Gaussians
 %
 \[
 \tag{3}
@@ -75,7 +79,7 @@ The coefficients $a_{x,n}, a_{y,n}$ were determined to emulate the magnitude of 
 
 \subsection{Pixel Sensitivity Variation}
 
-Our model for the sensitivity variation was chosen to emulate the same noise magnitude as real \textit{K2} observations. For our noise metric, we use the Combined Differential Photometric Precision for consistency with \cite{2016AJ....152..100L}. We used a two-step benchmarking process to estimate the magnitude of variation in quantum sensitivity and contribution by photon noise and background noise.
+Our model for the sensitivity variation was chosen to emulate the same noise magnitude as real \textit{K2} observations. For our noise metric, we use the Combined Differential Photometric Precision (CDPP) \citep{10.1086/668847} for consistency with \cite{2016AJ....152..100L}. We used a two-step benchmarking process to estimate the magnitude of variation in quantum sensitivity and contribution by photon noise and background noise.
 
 First we considered the no-motion case. For a large population of simulated targets with randomly generated stellar magnitude and detector position, the noise versus magnitude trend should closely follow that of the original \textit{Kepler} mission. To most accurately capture the characteristics of \textit{K2} data when analyzing the noise contributed by quantum sensitivity variation, our model included two sources of synthetic noise -- photon noise and background noise -- which contribute to the trend of increased noise for higher magnitude targets for the \textit{Kepler} mission. Benchmark Test 1 serves to constrain the levels of injected photon noise and background noise. The test consisted of plotting the CDPP for 1,000 targets from the original \textit{Kepler} mission and calculating the median value for each $Kp$ Mag at intervals of 0.5.
 
@@ -92,7 +96,7 @@ In Benchmark Test 2, we consider the case of current \textit{K2} motion. To acco
 
 To calculate motion, the column pixel correction (\texttt{POS\_CORR1}) and row pixel correction (\texttt{POS\_CORR2}), corresponding to motion in $x$ and $y$ respectively, were accessed from the target pixel file header. These offsets were added to the calculated centroid position of the simulated PSF for each cadence. Total magnitude of motion as reported in Table \ref{table:motionstatistics} represents the calculated maximum distance between centroid positions over the course of the simulated cadences.
 
-With real \textit{K2} motion applied, sensitivity variation parameters were adjusted until CDPP versus $Kp$ Mag corresponded to the trend of real \textit{K2} observations. Sensitivity variation was altered by adjusting the coefficients on the $s(x)s(y)$ polynomial model to achieve different drops in sensitivity from pixels' centers to their edges, as well as adjusting the random variation in sensitivity between pixels. We found that a stochastic distribution of sensitivity with up to $1\%$ variation between pixels and $2.48\%$ variation within pixels, from center to edge, resulted in Benchmark Test 2 following the most similar trend to the expected result. Our sensitivity polynomial went up to third order with coefficients \{1, 0, -0.05\}. The results of Benchmark Test 2 can be seen in Figure \ref{fig:1motion}.
+With real \textit{K2} motion applied, sensitivity variation parameters were adjusted until CDPP versus $Kp$ Mag corresponded to the trend of real \textit{K2} observations. Sensitivity variation was altered by adjusting the coefficients on the $s(x,y)$ polynomial model to achieve different drops in sensitivity from pixels' centers to their edges, as well as adjusting the random variation in sensitivity between pixels. We found that a stochastic distribution of sensitivity with up to $1\%$ variation between pixels and $2.48\%$ variation within pixels, from center to edge, resulted in Benchmark Test 2 following the most similar trend to the expected result. Our sensitivity polynomial went up to third order with coefficients \{1, 0, -0.05\}. The results of Benchmark Test 2 can be seen in Figure \ref{fig:1motion}.
 
 \begin{figure}[h]
 	\centering
@@ -100,17 +104,13 @@ With real \textit{K2} motion applied, sensitivity variation parameters were adju
 	\caption{Benchmark Test 2: Noise level (CDPP) of our simulated light curves with \textit{K2} motion compared to real \textit{K2} targets as a function of $Kp$ Mag. The points displayed in red show the noise of 1,000 raw \textit{K2} observations before de-trending with the EVEREST pipeline, and the larger red points outlined in black follow the median of the trend. Each blue point is a simulated target with current \textit{K2} motion and randomly varied initial centroid position and PSF shape. Our simulated data follow the same CDPP vs. $Kp$ Mag relationship as real data, indicating that the sensitivity variation in our model appropriately captures the detector.}
 	\label{fig:1motion}
 \end{figure}
-
-A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector_sensitivity}. The calculation used in our simulation does not generate the sensitivity model and PSF individually, and instead passes the parameters into a singly-integrated function. This saves a computational step and speeds up the process. However, we were unable to solve the second integral prior to calculation because the first integral of a Gaussian results in an error function, which is non-analytic.
-
+A sample detector with included sensitivity variation can be seen in Figure \ref{fig:detector_sensitivity}.  For campaigns up to 17, stellar PSFs already traverse various regions of sensitivity variation on the CCD due to pointing instability. As spacecraft motion increases, PSFs will move more dramatically across many pixels, which will contribute significant noise to sputtering-\textit{K2} light curves. With a working model for sensitivity variation, we examined the high-motion case.
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1.0\linewidth]{detector_sensitivity.eps}
-	\caption{(a) A sample detector with sensitivity variation and no stellar targets, where white represents 100\% photon detection efficiency, and the shaded regions have lower values for quantum sensitivity. Note that our model peaks in sensitivity at the center of each pixel and falls off towards the edges. There is also slight random variation in sensitivity between pixels. (b) A Stellar PSF projected onto the detector at the sub-pixel level. The sensitivity variation has been exaggerated in this simulation to demonstrate the variation in sub-pixel fluxes. (c) The final interpolated image. The value of each pixel is the integral over $x$ and $y$ of the sub-pixel flux.}
+	\includegraphics[width=1.0\linewidth]{detector_sensitivity.pdf}
+	\caption{(a) A sample detector with sensitivity variation and no stellar targets, where white represents 100\% photon detection efficiency, and the shaded regions have lower values for quantum sensitivity. Note that our model peaks in sensitivity at the center of each pixel and falls off towards the edges. There is also slight random variation in sensitivity between pixels. (b) A Stellar PSF projected onto the detector at the sub-pixel level. (c) The final interpolated image. The value of each pixel is the integral over $x$ and $y$ of the sub-pixel flux.}
 	\label{fig:detector_sensitivity}
 \end{figure}
-
-For campaigns up to 17, stellar PSFs already traverse various regions of sensitivity variation on the CCD due to pointing instability. As spacecraft motion increases, PSFs will move more dramatically across many pixels, which will contribute significant noise to sputtering-\textit{K2} light curves. With a working model for sensitivity variation, we examined the high-motion case.
 
 \subsection{Increased Motion}
 
@@ -131,17 +131,17 @@ To test how PLD performs on targets with high motion relative to the detector, w
 \end{center}
 \end{table}
 
-Our method to increase motion involved simply multiplying the pixel offset due to current \textit{K2} motion by constant coefficients. This ensured the target traversed more pixels over a wider range of the detector while keeping the position calculation simple enough to avoid introducing new opportunity for error. Because it is still unclear exactly how increased motion will manifest in the spacecraft's observations when fuel is expended, we opted to examine the simplest case of linearly increasing motion magnitude. It should be noted that this may not be the most appropriate treatment for all de-trending methods, particularly those that rely on fitting the centroid position of the target. However, the method used in the \texttt{EVEREST} pipeline (pixel level decorrelation) is agnostic to centroid position and relies simply on the measured flux in each pixel, so our treatment of motion is thorough enough for the goal of testing noise-removal methods.
+Our method to increase motion involved simply multiplying the pixel offset due to current \textit{K2} motion by constant coefficients. This ensured the target traversed more pixels over a wider range of the detector while keeping the position calculation simple enough to avoid introducing new opportunity for error. Because it is still unclear exactly how increased motion will manifest in the spacecraft's observations when fuel is expended, we opted to examine the simplest case of linearly increasing motion magnitude. It should be noted that this may not be the most appropriate treatment for all de-trending methods, particularly those that rely on fitting the centroid position of the target. However, the method used in the \texttt{EVEREST} pipeline (pixel level de-correlation) is agnostic to centroid position and relies simply on the measured flux in each pixel, so our treatment of motion is thorough enough for the goal of testing noise-removal methods.
 
 \section{Results}
 
-With a robust forward model of \textit{K2} established, including both motion and sensitivity variation, we were able to apply our de-trending methods to stars with various tiers of increased motion to predict and understand the results of thruster failure. To elaborate on the results of our test, we first introduce our de-trending methods (\S 3.1), and then examine the application of these methods to our simulated data (\S 3.2).
+With a forward model of \textit{K2} established, including both motion and sensitivity variation, we were able to apply our de-trending methods to stars with various tiers of increased motion to predict and understand the results of thruster failure. To elaborate on the results of our test, we first introduce our de-trending methods (\S 3.1), and then examine the application of these methods to our simulated data (\S 3.2).
 
 \subsection{PLD}
 
-After generating a set of light curves representative of extreme motion \textit{K2} observations, we tested systematics removal methods to assess the potential value of sputtering-\textit{K2} data. To de-trend our synthetic light curves, we used a variant of the method applied in the \texttt{EVEREST} pipeline. \texttt{EVEREST} utilizes a method called pixel level decorrelation (PLD), developed by \cite{0004-637X-805-2-132} for the \textit{Spitzer} Space Telescope.
+After generating a set of light curves representative of extreme motion \textit{K2} observations, we tested systematics removal methods to assess the potential value of sputtering-\textit{K2} data. To de-trend our synthetic light curves, we used a variant of the method applied in the \texttt{EVEREST} pipeline. \texttt{EVEREST} utilizes a method called pixel level de-correlation (PLD), developed by \cite{0004-637X-805-2-132} for the \textit{Spitzer} Space Telescope.
 
-PLD seeks to remove noise generated by intra-pixel sensitivity variation independent of apparent motion of the star. This method is particularly effective for \textit{K2} light curves despite the magnitude of apparent motion being high, and \texttt{EVEREST} can recover \textit{Kepler}-like precision in exoplanet light curves for targets up to $Kp = 15$. For a more detailed treatment of PLD, see the paper by \cite{0004-637X-805-2-132} and the first two \texttt{EVEREST} papers \citep{2016AJ....152..100L,2017arXiv170205488L}.
+PLD seeks to remove noise generated by intra-pixel sensitivity variation without solving for the centroid position of the target star. This method is particularly effective for \textit{K2} light curves despite the magnitude of apparent motion being high, and \texttt{EVEREST} can recover \textit{Kepler}-like precision in exoplanet light curves for targets up to $Kp = 15$. For a more detailed treatment of PLD, see the paper by \cite{0004-637X-805-2-132} and the first two \texttt{EVEREST} papers \citep{2016AJ....152..100L,2018AJ....156...99L}.
 
 \subsection{Motion Tests}
 
@@ -151,8 +151,8 @@ Synthetic targets with 2x current \textit{K2} motion achieved \textit{Kepler}-li
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1.0\linewidth]{detmotion.png}
-	\caption{Noise level (CDPP) of simulated light curves after de-trending with $2^{\text{nd}}$ order Pixel Level Decorrelation (PLD) as a function of $Kp$ Mag. The green points show noise levels of 1,000 targets from the original \textit{Kepler} mission with the median represented by the larger green circles outlined in black. De-trended simulated light curves with 1x, 2x, 4x, and 10x current \textit{K2} motion are represented by the solid trends, and each point is the mean of 5 simulated light curves of a given $Kp$ Mag with slightly varied PSF shape and initial centroid positions. We achieve sub-400 ppm CDPP up to 5x motion for targets up to $Kp \text{ Mag}=15.5$, and de-trended light curves up to 10x motion perform better that group based observation (for which $<1,000$ ppm is difficult to achieve).}
+	\includegraphics[width=1.0\linewidth]{detrend_test.pdf}
+	\caption{Noise level (CDPP) of simulated light curves after de-trending with $2^{\text{nd}}$ order Pixel Level De-correlation (PLD) as a function of $Kp$ Mag. The green points show noise levels of 1,000 targets from the original \textit{Kepler} mission with the median represented by the larger green circles outlined in black. De-trended simulated light curves with 1x, 2x, 4x, and 10x current \textit{K2} motion are represented by the solid trends, and each point is the mean of 5 simulated light curves of a given $Kp$ Mag with slightly varied PSF shape and initial centroid positions. We achieve sub-400 ppm CDPP up to 5x motion for targets up to $Kp \text{ Mag}=15.5$, and de-trended light curves up to 10x motion perform better that ground-based observation (for which $<1,000$ ppm is difficult to achieve).}
 	\label{fig:detmotion}
 \end{figure}
 
@@ -162,11 +162,11 @@ These results were achieved by applying PLD to pixels within an aperture around 
 
 \subsection{Direct Measurement of Sensitivity}
 
-We acknowledge the inconsistency in resultant intra-pixel sensitivity variation between our calibration tests and the direct measurement of the sub-pixel response by \cite{2018arXiv180607430V}. Future work is necessary to identify the source of the meaningfully different conclusions, and we would like to identify a number of factors that likely contribute. The primary suspect is the degeneracy between inter- and intra-pixel sensitivity variation in our motion benchmark, both of which contribute to the systematic noise of synthetic light curves. Also included in this degeneracy are the magnitudes of background noise and photon noise. With some variation in the distribution of sensitivity, it is possible to achieve similar noise values as those directly measured. However, the noise characterization performed in Benchmark Tests I & II found that the values we arrived at most closely matched the noise levels of \textit{K2} observations.
+We acknowledge the inconsistency in resultant intra-pixel sensitivity variation between our calibration tests and the direct measurement of the sub-pixel response by \cite{2018arXiv180607430V}. Future work is necessary to identify the source of the meaningfully different conclusions, and we would like to identify a number of factors that likely contribute. The primary suspect is the degeneracy between inter- and intra-pixel sensitivity variation in our motion benchmark, both of which contribute to the systematic noise of synthetic light curves. Also included in this degeneracy are the magnitudes of background noise and photon noise. With some variation in the distribution of sensitivity, it is possible to achieve similar noise values as those estimated for \textit{K2} observations. Our values were determined by calculating the best fit of our synthetic light curves to observed noise trends.
 
 Additionally, our calibration was based on \textit{K2} observations, and there are a number of physical differences between the current state of the space telescope detectors and the laboratory environment. \cite{2018arXiv180607430V} acknowledge the temperature difference, and when considered in combination with the potential degradation of the telescope detector after nearly a decade of use, this could result in a significant difference in measured sensitivity.
 
-It is also possible that the size of a stellar PSF would elicit a different response from the CCD's pixels compared to a much smaller PSF. \cite{1748-0221-9-03-C03048} 
+It is also possible that the size and brightness of a stellar PSF would elicit a different response from the CCD's pixels compared to the much smaller point-scan PSF used to measure sub-pixel response. \cite{1748-0221-9-03-C03048} demonstrate that with increased brightness, the spread of a PSF also increases more than would be expected by a linearly increasing PSF, possibly due to the repulsive forces between electrons captured in a pixel. Because of this effect, the light curve generated by performing aperture photometry on larger, brighter PSFs may produce a level of noise consistent with a less significant drop intra-pixel sensitivity variation.
 
 \subsection{Future Applications}
 
@@ -178,6 +178,21 @@ The stellar PSF parameters can be easily adjusted in the forward model produced 
 
 Seeing aberration and atmospheric interference are additional sources of noise that could be included in the \texttt{scope} model. PLD was developed for \textit{Spitzer} and modified for application to \textit{K2}, but has seen little application elsewhere. For ground-based observations with significant noise due to pointing issues or atmospheric interference, PLD may be a valuable tool to make the most of data. \texttt{scope} is an ideal testbed for this type of noise-removal because it allows users to perform tests on noisy observations of synthetic sources that are well understood with input parameters that can be compared to post-processing results. Though it was initially imagined for space-based telescopes, this software has potentially useful applications for ground-based telescopes.
 
+
+\section{Conclusions}
+
+We have created a forward model of the \textit{Kepler} space telescope detector, \texttt{scope}, which includes inter- and intra-pixel sensitivity variation and mathematical simulations of stellar PSFs to test de-trending methods for exoplanet targets. Using these simulations, we have demonstrated that \texttt{EVEREST} and PLD are  capable of reducing systematic noise to higher precision than ground based observations in \textit{K2} light curves with up to 10x current spacecraft motion. We have shown that in the event of spacecraft thruster sputtering due to diminishing fuel reserves, valuable data can likely still be collected and analyzed to benefit \textit{K2} science goals. The question surrounding the usefulness of high-motion data is increasingly relevant to the study of \textit{K2}'s final observations, and our hope is to emphasize the potential value in continued analysis and contribute to the de-trending of data.
+
+Though \textit{TESS}, the successor to \textit{Kepler}, has launched, there remains a wealth of both existing and unobserved \textit{K2} data that offers valuable contribution to our understanding of exoplanetary systems. Earth-like exoplanets can be difficult to identify in the high-magnitude noise of current \textit{K2} data, which will continue to get noisier as the mission reaches its conclusion. \textit{TESS} and \textit{JWST} will likely face their own challenges with data analysis and noise-removal, and the tools developed for \textit{K2} will be foundations and references for new solutions. The methods we have presented aim to produce the most precise exoplanet identification, characterization, and analysis from the data we have available, and prepare for the next generation of space telescopes.
+
+This work was supported by NASA grant NNX14AK26G and by the NASA Astrobiology Institute's Virtual Planetary Laboratory. Computing for this research was performed on the Hyak supercomputer system at the University of Washington.
+
+\clearpage
+\bibliographystyle{aasjournal}
+\bibliography{references.bib}
+
+\clearpage
+\appendix
 \section{Using \texttt{scope}}
 
 All of our code is open-source and publicly available online. Our simulation package can be installed by running
@@ -186,55 +201,45 @@ All of our code is open-source and publicly available online. Our simulation pac
 pip install tele-scope
 \end{lstlisting}
 %
-To create a light curve with \texttt{scope}, first instantiate a \texttt{Target} object:
+To create a light curve with \texttt{scope}, first instantiate a \texttt{Target} object by calling:
 %
 \begin{lstlisting}[language=Python]
 import scope
-star = scope.Target()
+star = scope.generate_target()
 \end{lstlisting}
 %
-A light curve can be generated by calling the \texttt{GenerateLightCurve()} function, which returns an array of image files (\texttt{tpf}), a one-dimensional flux light curve (\texttt{flux}), and an array of matrices containing the error in each pixel (\texttt{ferr}):
+An array of images (\texttt{targetpixelfile}), a one-dimensional flux light curve (\texttt{lightcurve}), and an array of matrices containing the error in each pixel (\texttt{error}) are all accessible as properties of the \texttt{Target} object:
 %
 \begin{lstlisting}[language=Python]
-tpf, flux, ferr = star.GenerateLightCurve()
+star.targetpixelfile, star.lightcurve, star.error
 \end{lstlisting}
 %
 After a target is created, transits, variability, or neighbors can be added with the following functions (with example parameters provided):
 %
 \begin{lstlisting}[language=Python]
-star.AddTransit(depth=.01, per=15, dur=.5, t0=5.)
-star.AddVariability(var_amp=0.005, freq=0.25)
-star.AddNeighbor(magdiff=1., dist=1.7)
+star.add_transit(depth=.01, per=15, dur=.5, t0=5.)
+star.add_variability(var_amp=0.005, freq=0.25)
+star.add_neighbor(magdiff=1., dist=1.7)
 \end{lstlisting}
 Alternatively, a \texttt{Target} can be instantiated containing added features with default parameters by changing the following boolean parameters:
 %
 \begin{lstlisting}[language=Python]
-star = scope.Target(transit=True, variable=True, neighbor=True)
+star = scope.generate_target(transit=True, variable=True,
+                             neighbor=True)
 \end{lstlisting}
 %
 The detector with sensitivity variation can be displayed by calling
 %
 \begin{lstlisting}[language=Python]
-star.DisplayDetector()
+star.display_detector()
 \end{lstlisting}
 %
 To de-trend with second order PLD, run
 \begin{lstlisting}[language=Python]
-star.Detrend()
+star.detrend()
 \end{lstlisting}
 
-Documentation and examples can be found online at nksaunders.github.io/scope. The code is publicly available at github.com/nksaunders/scope.
-
-\section{Conclusions}
-
-We have created a forward model of the \textit{Kepler} space telescope detector, \texttt{scope}, which includes inter- and intra-pixel sensitivity variation and mathematical simulations of stellar PSFs to test de-trending methods for exoplanet targets. Using these simulations, we have demonstrated that \texttt{EVEREST} and PLD are  capable of reducing systematic noise to higher precision than ground based observations in \textit{K2} light curves with up to 10x current spacecraft motion. We have shown that in the event of spacecraft thruster sputtering due to diminishing fuel reserves, valuable data can likely still be collected and analyzed to benefit \textit{K2} science goals. The question surrounding the usefulness of high-motion data is increasingly relevant to making decisions about the future of \textit{K2} observations, and our hope is to emphasize the potential value in continued observation and contribute to the de-trending of future data.
-
-Though \textit{TESS}, the successor to \textit{Kepler}, has launched, there remains a wealth of both existing and unobserved \textit{K2} data that offers valuable contribution to our understanding of exoplanetary systems. Earthlike exoplanets can be difficult to identify in the high-magnitude noise of current \textit{K2} data, which will continue to get noisier as the mission reaches its conclusion. \textit{TESS} and \textit{JWST} will likely face their own challenges with data analysis and noise-removal, and the tools developed for \textit{K2} will be foundations and references for new solutions. The methods we have presented aim to produce the most precise exoplanet identification, characterization, and analysis from the data we have available, and prepare for the next generation of space telescopes.
-
-This work was supported by NASA grant NNX14AK26G and by the NASA Astrobiology Institute's Virtual Planetary Laboratory. Computing for this research was performed on the Hyak supercomputer system at the University of Washington.
-
-\clearpage
-\bibliographystyle{aasjournal}
-\bibliography{references.bib}
+Documentation and examples can be found online at \href{https://nksaunders.github.io/scope}{nksaunders.github.io/scope}. The code is publicly available at
+\href{https://github.com/nksaunders/scope}{github.com/nksaunders/scope}.
 
 \end{document}
